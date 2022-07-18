@@ -5,11 +5,21 @@ import Dashboard from '../Dashboard/Dashboard';
 import React, { useState } from 'react';
 import Login from '../Login/Login'
 
-function App() {
-  const [token, setToken] = useState()
+function setToken(userToken) {
+  sessionStorage.setItem("token", JSON.stringify(userToken));
+}
 
-  if(!token){
-    return <Login setToken={setToken}/>
+function getToken() {
+  const tokenString = sessionStorage.getItem("token")
+  const userToken = JSON.parse(tokenString)
+  return userToken?.token
+}
+
+function App() {
+  const token = getToken()
+
+  if (!token) {
+    return <Login setToken={setToken} />
   }
 
   return (

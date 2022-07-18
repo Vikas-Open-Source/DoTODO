@@ -12,7 +12,8 @@ async function loginUser(credentials) {
         },
         body: credentials
     }).then(response => {
-        response.ok ? response.json() : null
+        console.log(response.ok)
+        return response.ok ? response.json() : null
     })
 }
 
