@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import './Login.css'
 
 
-async function loginUser(credentials){
+async function loginUser(credentials) {
     var loginAPIURL = 'http://localhost:8080/login'
     return fetch(loginAPIURL, {
         method: 'POST',
-        headers:{
+        headers: {
             'Content-Type': 'application/json'
         },
         body: credentials
-    }).then(data => data.json())
+    }).then(response => {
+        response.ok ? response.json() : null
+    })
 }
 
 export default function Login({ setToken }) {
@@ -24,7 +26,9 @@ export default function Login({ setToken }) {
             username,
             password
         });
-        setToken(token);
+        if (token != null) {
+            setToken(token);
+        }
     }
 
     return (
