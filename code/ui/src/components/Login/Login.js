@@ -34,24 +34,27 @@ export default function Login({ setToken }) {
     }
 
     return (
-        <Paper elevation={3}>
-            <div className='login-wrapper'>
-                <h1>Please Login</h1>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        <p>Username</p>
-                        <input type="text" onChange={event => setUsername(event.target.value)} />
-                    </label>
-                    <label>
-                        <p>Password</p>
-                        <input type="password" onChange={event => setPassword(event.target.value)} />
-                    </label>
-                    <div>
-                        <button type='submit'>Submit</button>
-                    </div>
-                </form>
-            </div>
-        </Paper>
+        <div className='login-main'>
+            <h1 style={{textAlign: 'center', fontSize : 50}}>Do TODO</h1>
+            <Paper elevation={3} className='login-wrapper' style={{backgroundColor: '#f7fcf9'}}>
+                <div className='login'>
+                    <p style={{textAlign: 'center'}}>Login</p>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            <p style={{marginBottom : 0}}>Username</p>
+                            <input type="text" onChange={event => setUsername(event.target.value)} />
+                        </label>
+                        <label>
+                            <p style={{marginBottom : 0}}>Password</p>
+                            <input type="password" onChange={event => setPassword(event.target.value)} />
+                        </label>
+                        <div>
+                            <button type='submit' style={{marginTop : 30}}>Sign In</button>
+                        </div>
+                    </form>
+                </div>
+            </Paper>
+        </div>
     )
 }
 
