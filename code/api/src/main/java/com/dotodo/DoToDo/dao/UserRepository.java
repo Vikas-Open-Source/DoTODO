@@ -1,6 +1,6 @@
 package com.dotodo.DoToDo.dao;
 
-import com.dotodo.DoToDo.com.dotodo.DoToDo.model.entity.User;
+import com.dotodo.DoToDo.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;

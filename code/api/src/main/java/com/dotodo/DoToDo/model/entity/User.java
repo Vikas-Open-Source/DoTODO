@@ -1,4 +1,4 @@
-package com.dotodo.DoToDo.com.dotodo.DoToDo.model.entity;
+package com.dotodo.DoToDo.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

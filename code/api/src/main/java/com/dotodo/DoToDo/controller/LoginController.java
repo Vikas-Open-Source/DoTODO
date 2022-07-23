@@ -1,6 +1,6 @@
 package com.dotodo.DoToDo.controller;
 
-import com.dotodo.DoToDo.com.dotodo.DoToDo.model.entity.User;
+import com.dotodo.DoToDo.model.entity.User;
 import com.dotodo.DoToDo.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.dotodo.DoToDo.service;
 
-import com.dotodo.DoToDo.com.dotodo.DoToDo.model.dto.UserDTO;
-import com.dotodo.DoToDo.com.dotodo.DoToDo.model.entity.User;
+import com.dotodo.DoToDo.model.dto.UserDTO;
+import com.dotodo.DoToDo.model.entity.User;
 import com.dotodo.DoToDo.dao.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
