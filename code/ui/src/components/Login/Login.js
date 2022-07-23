@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,27 +8,28 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axiosInstance from '../../axios'
 
 
 async function loginUser(credentials) {
-    var loginAPIURL = 'http://localhost:8080/login'
-    return fetch(loginAPIURL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: credentials
-    }).then(response => {
-        console.log(response.ok)
-        return response.ok ? response.json() : null
-    })
+    const response = await axiosInstance({
+      method: 'POST',
+      url: '/health',
+      body: credentials
+    });
+    console.log(response.data)
+    console.log(response)
 }
 
 export default function Login({ setToken }) {
+
+  const [alert, setAlert] = useState(false);
 
     const handleSubmit = async event => {
         event.preventDefault();
@@ -39,9 +40,16 @@ export default function Login({ setToken }) {
         }
         const token = await loginUser(credentials);
         if (token != null) {
+            setAlert(false);
             setToken(token);
+        } else{
+          setAlert(true);
         }
     }
+
+    const handleAlertClose = () => {
+      setAlert(false);
+    };
 
     const theme = createTheme();
 
@@ -57,6 +65,18 @@ export default function Login({ setToken }) {
                     alignItems: 'center',
                   }}
                 >
+                  <Snackbar
+                    open={alert}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right'
+                    }}
+                    autoHideDuration={3000}
+                    onClose={handleAlertClose}>
+                    <Alert variant="filled" severity="error" sx={{ width: '100%' }}>
+                      Invalid Credentials
+                    </Alert>
+                </Snackbar>
                   <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                     <LockOutlinedIcon />
                   </Avatar>
