@@ -13,16 +13,16 @@ import javax.validation.constraints.Size;
 @Data
 public class UserDTO {
 
+  @NotBlank(message = "Email cannot be blank")
+  @Email(message = "Email not valid", regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
+  private String email;
+
   @NotBlank(message = "Name cannot be blank")
   private String name;
 
   @NotBlank(message = "Password cannot be blank")
-  @Size(min = 8, max = 16)
+  @Size(min = 8, max = 16, message = "Password size must be between 8 and 16 characters")
   private String password;
-
-  @NotBlank(message = "Email cannot be blank")
-  @Email
-  private String email;
 
   @NotBlank(message = "Phone cannot be blank")
   private String phone;

@@ -33,12 +33,16 @@ public class UserService {
           user.setPhone(optionalUser.getPhone());
           user.setName(optionalUser.getName());
         },
-        () -> logger.error("User with email " +  email + " does not exist"));
+        () -> logger.error("User with email " +  email + " does not exist."));
     return modelMapper.map(user, UserDTO.class);
   }
 
   public UserDTO createUser(UserDTO userDto) {
     User user = modelMapper.map(userDto, User.class);
+    if(userRepository.existsByEmail(user.getEmail())) {
+      logger.error("User with email " +  user.getEmail() + " already exists.");
+      return modelMapper.map(new User(), UserDTO.class);
+    }
     user.setName(userDto.getName());
     user.setEmail(userDto.getEmail());
     user.setEmail(userDto.getEmail());
@@ -64,12 +68,11 @@ public class UserService {
 
   public UserDTO deleteUser(String email) {
     if (userRepository.existsByEmail(email)) {
-      User deletedUser = userRepository.deleteByEmail(email);
+      userRepository.deleteByEmail(email);
       logger.info("Deleted user by email " + email);
-      return modelMapper.map(deletedUser, UserDTO.class);
     } else {
       logger.error("User by email " + email + "does not exist.");
-      return modelMapper.map(new User(), UserDTO.class);
     }
+    return modelMapper.map(new User(), UserDTO.class);
   }
 }
