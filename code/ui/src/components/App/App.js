@@ -7,8 +7,9 @@ import Login from '../Login/Login'
 import useToken from './useToken';
 
 function App() {
-  const { token, setToken } = useToken();
+  const { setToken, getToken } = useToken();
 
+  var token = getToken();
   if (!token) {
     return <Login setToken={setToken} />
   }
