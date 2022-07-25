@@ -30,8 +30,8 @@ public class UserService {
     optionalUserDetails.ifPresentOrElse(
         optionalUser -> {
           user.setEmail(optionalUser.getEmail());
-          user.setPhone(optionalUser.getPhone());
-          user.setName(optionalUser.getName());
+          user.setFirstName(optionalUser.getFirstName());
+          user.setLastName(optionalUser.getLastName());
         },
         () -> logger.error("User with email " +  email + " does not exist."));
     return modelMapper.map(user, UserDTO.class);
@@ -43,11 +43,11 @@ public class UserService {
       logger.error("User with email " +  user.getEmail() + " already exists.");
       return modelMapper.map(new User(), UserDTO.class);
     }
-    user.setName(userDto.getName());
+    user.setFirstName(userDto.getFirstName());
+    user.setLastName(userDto.getLastName());
     user.setEmail(userDto.getEmail());
     user.setEmail(userDto.getEmail());
     user.setPassword(userDto.getPassword());
-    user.setPhone(userDto.getPhone());
     User savedUser = userRepository.save(user);
     return modelMapper.map(savedUser, UserDTO.class);
   }
@@ -55,9 +55,9 @@ public class UserService {
   public UserDTO updateUser(UserDTO userDto) {
     User user = modelMapper.map(userDto, User.class);
     if (userRepository.existsByEmail(user.getEmail())) {
-      user.setName(userDto.getName());
+      user.setFirstName(userDto.getFirstName());
+      user.setLastName(userDto.getLastName());
       user.setPassword(userDto.getPassword());
-      user.setPhone(userDto.getPhone());
       User savedUser = userRepository.save(user);
       return modelMapper.map(savedUser, UserDTO.class);
     } else {

@@ -13,9 +13,8 @@ import javax.persistence.Id;
 @Entity(name = "users")
 public class User {
 
-  private String name;
+  private String firstName;
+  private String lastName;
   private String password;
-
   @Id private String email;
-  private String phone;
 }
