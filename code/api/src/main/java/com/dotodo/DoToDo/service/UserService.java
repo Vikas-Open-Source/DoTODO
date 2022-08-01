@@ -1,5 +1,7 @@
 package com.dotodo.DoToDo.service;
 
+import com.dotodo.DoToDo.auth.dao.UserTokenRepository;
+import com.dotodo.DoToDo.auth.model.entity.UserToken;
 import com.dotodo.DoToDo.model.dto.UserDTO;
 import com.dotodo.DoToDo.model.entity.User;
 import com.dotodo.DoToDo.dao.UserRepository;
@@ -9,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -17,11 +21,16 @@ public class UserService {
   private final Logger logger = LoggerFactory.getLogger(UserService.class);
   private final UserRepository userRepository;
   private final ModelMapper modelMapper;
+  private final UserTokenRepository userTokenRepository;
 
   @Autowired
-  public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+  public UserService(
+      UserRepository userRepository,
+      ModelMapper modelMapper,
+      UserTokenRepository userTokenRepository) {
     this.userRepository = userRepository;
     this.modelMapper = modelMapper;
+    this.userTokenRepository = userTokenRepository;
   }
 
   public UserDTO getUser(String email) {
@@ -33,14 +42,15 @@ public class UserService {
           user.setFirstName(optionalUser.getFirstName());
           user.setLastName(optionalUser.getLastName());
         },
-        () -> logger.error("User with email " +  email + " does not exist."));
+        () -> logger.error("User with email " + email + " does not exist."));
     return modelMapper.map(user, UserDTO.class);
   }
 
   public UserDTO createUser(UserDTO userDto) {
     User user = modelMapper.map(userDto, User.class);
-    if(userRepository.existsByEmail(user.getEmail())) {
-      logger.error("User with email " +  user.getEmail() + " already exists.");
+    UserToken userToken = new UserToken();
+    if (userRepository.existsByEmail(user.getEmail())) {
+      logger.error("User with email " + user.getEmail() + " already exists.");
       return modelMapper.map(new User(), UserDTO.class);
     }
     user.setFirstName(userDto.getFirstName());
@@ -49,6 +59,10 @@ public class UserService {
     user.setEmail(userDto.getEmail());
     user.setPassword(userDto.getPassword());
     User savedUser = userRepository.save(user);
+    userToken.setEmail(userDto.getEmail());
+    userToken.setToken(UUID.randomUUID().toString());
+    userToken.setLastUpdatedTimestamp(new Date());
+    userTokenRepository.save(userToken);
     return modelMapper.map(savedUser, UserDTO.class);
   }
 

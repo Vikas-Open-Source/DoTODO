@@ -7,7 +7,7 @@ CREATE TABLE if not exists users(
 
 
 CREATE TABLE if not exists user_token(
-    email varchar(50) NOT NULL,
+    email varchar(50) PRIMARY KEY,
     token varchar(36),
     last_updated_timestamp timestamp,
     FOREIGN KEY (email) REFERENCES users(email)
