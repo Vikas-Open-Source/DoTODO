@@ -35,17 +35,15 @@ public class LoginService {
       return null;
     } else {
       Optional<User> optionalUserDetails = userRepository.findByEmail(user.getEmail());
-      if (optionalUserDetails.isEmpty()) {
-        logger.error("User with email does not exist");
-        return null;
-      }
-      if (!user.getPassword().equals(optionalUserDetails.get().getPassword())) {
-        logger.error("Email or password incorrect");
-        return null;
-      } else {
-        String token = userTokenRepository.findByEmail(user.getEmail()).get().getToken();
-        return token;
+      if (optionalUserDetails.isPresent()
+          && user.getPassword().equals(optionalUserDetails.get().getPassword())) {
+        Optional<UserToken> optionalUserTokenDetails =
+            userTokenRepository.findByEmail(user.getEmail());
+        if (optionalUserTokenDetails.isPresent()) {
+          return optionalUserTokenDetails.get().getToken();
+        }
       }
     }
+    return null;
   }
 }
